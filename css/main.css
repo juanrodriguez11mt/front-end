@@ -1,0 +1,7 @@
+form label {
+    display: block !important;
+}
+
+form input {
+    width: 100%;
+}
