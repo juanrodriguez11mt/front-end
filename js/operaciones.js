@@ -159,6 +159,11 @@ function eliminar() {
 }
 
 function registrar() {
+    $('#car-id').prop("disabled", true)
+    $('#car-brand').prop("disabled", true)
+    $('#car-model').prop("disabled", true)
+    $('#car-category').prop("disabled", true)
+
     var body = { 
         id: $("#car-id").val(),
         brand: $("#car-brand").val(),
@@ -174,13 +179,17 @@ function registrar() {
     
         success : function(response, status) {
             alert('Registro exitoso');
-            listaCarros();
+            limpiarFormulario();
         },
         error : function(xhr, status) {
             console.log('ha sucedido un problema');
         },
         complete : function(xhr, status) {
             console.log('Petición realizada');
+            $('#car-id').prop("disabled", false)
+            $('#car-brand').prop("disabled", false)
+            $('#car-model').prop("disabled", false)
+            $('#car-category').prop("disabled", false)
         }
     });
 }

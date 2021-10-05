@@ -15,48 +15,21 @@
 
         <div class="container">
             <!-- Content here -->
+            <hr>       
+            <nav class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link" href="registrar.html">Registrar</a>
+                </li>
+            </nav>
+            <hr>
+            
             <h1>Renta de carros G24</h1>
 
-            <br>
-
-            <div class="container" style="width: 400px;">
-                <h3>Registrar Carro</h3>
-                <form id="car-form">
-                    <div>
-                        <label>ID</label>
-                        <input id="car-id" type="number"/>
-                    </div>
-                    <div>
-                        <label>Marca</label>
-                        <input id="car-brand" type="text"/>
-                    </div>
-                    <div>
-                        <label>Modelo</label>
-                        <input id="car-model" type="number"/>
-                    </div>
-                    <div>
-                        <label>Categoría</label>
-                        <input id="car-category" type="number"/>
-                    </div>
-    
-                    <hr>
-    
-                    <div class="mx-aut">
-                        <button type="button" class="btn btn-success" onclick="registrar()">Actualizar</button>
-                        <button type="button" class="btn btn-primary" onclick="limpiarFormulario()">Limpiar</button>
-                    </div>
-                </form>
+            <div class="nav justify-content-end">
+                <button type="button" class="btn btn-outline-primary" onclick="cargarLista()">Recargar lista</button>
             </div>
 
             <br>
-
-            <hr>
-
-            <nav class="nav justify-content-end">
-                <li class="nav-item">
-                    <button type="button" class="btn btn-outline-primary" onclick="cargarLista()">Recargar lista</button>
-                </li>
-            </nav>
 
             <table class="table" id="cars-table">
                 <thead>
