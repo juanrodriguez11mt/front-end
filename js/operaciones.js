@@ -92,7 +92,17 @@ function obtenerParametroId() {
     return undefined;
 };
 
+function limpiarFormulario() {
+    $("#car-id").val("");
+    $("#car-brand").val("");
+    $("#car-model").val("");
+    $("#car-category").val("");
+}
+
 function actualizar() {
+    $('#car-brand').prop("disabled", true)
+    $('#car-model').prop("disabled", true)
+    $('#car-category').prop("disabled", true)
     var body = { 
         id: $("#car-id").val(),
         brand: $("#car-brand").val(),
@@ -108,15 +118,68 @@ function actualizar() {
     
         success : function(response, status) {
             alert('Datos actualizados');
-            $('#car-brand').prop("disabled", true)
-            $('#car-model').prop("disabled", true)
-            $('#car-category').prop("disabled", true)
         },
         error : function(xhr, status) {
             console.log('ha sucedido un problema');
         },
         complete : function(xhr, status) {
-            $('#mensaje').empty();
+            console.log('Petición realizada');
+            $('#car-brand').prop("disabled", false)
+            $('#car-model').prop("disabled", false)
+            $('#car-category').prop("disabled", false)
+        }
+    });
+}
+
+function eliminar() {
+    if (confirm("¿Está seguro de eliminar el registro?")) {
+        var body = { 
+            id: $("#car-id").val()
+        }
+    
+        $.ajax({    
+            url : ruta,
+            data : JSON.stringify(body),
+            type : 'DELETE',
+            contentType: 'application/json',
+            
+            success : function(response, status) {
+                alert('Registro eliminado');
+                $('#car-form').css("display", "none");
+                $('#mensaje').text("No hay registro disponible");
+            },
+            error : function(xhr, status) {
+                console.log('ha sucedido un problema');
+            },
+            complete : function(xhr, status) {
+                console.log('Petición realizada');
+            }
+        });
+    }
+}
+
+function registrar() {
+    var body = { 
+        id: $("#car-id").val(),
+        brand: $("#car-brand").val(),
+        model: $("#car-model").val(),
+        category_id: $("#car-category").val(),
+    }
+    
+    $.ajax({    
+        url : ruta,
+        data : JSON.stringify(body),
+        type : 'POST',
+        contentType: 'application/json',
+    
+        success : function(response, status) {
+            alert('Registro exitoso');
+            listaCarros();
+        },
+        error : function(xhr, status) {
+            console.log('ha sucedido un problema');
+        },
+        complete : function(xhr, status) {
             console.log('Petición realizada');
         }
     });

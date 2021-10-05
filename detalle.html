@@ -26,31 +26,33 @@
 
             <span id="mensaje"></span>
 
-            <form id="car-form" style="display: none;">
-                <div>
-                    <label>ID</label>
-                    <input id="car-id" type="number" disabled/>
-                </div>
-                <div>
-                    <label>Marca</label>
-                    <input id="car-brand" type="text" disabled/>
-                </div>
-                <div>
-                    <label>Modelo</label>
-                    <input id="car-model" type="number" disabled/>
-                </div>
-                <div>
-                    <label>Categoría</label>
-                    <input id="car-category" type="number" disabled/>
-                </div>
-
-                <hr>
-
-                <div class="mx-aut">
-                    <button type="button" class="btn btn-success" onclick="actualizar()">Actualizar</button>
-                    <button type="button" class="btn btn-danger" onclick="eliminar()">Eliminar</button>
-                </div>
-            </form>
+            <div class="container" style="width: 400px;">
+                <form id="car-form" style="display: none;">
+                    <div>
+                        <label>ID</label>
+                        <input id="car-id" type="number" disabled/>
+                    </div>
+                    <div>
+                        <label>Marca</label>
+                        <input id="car-brand" type="text" disabled/>
+                    </div>
+                    <div>
+                        <label>Modelo</label>
+                        <input id="car-model" type="number" disabled/>
+                    </div>
+                    <div>
+                        <label>Categoría</label>
+                        <input id="car-category" type="number" disabled/>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="mx-aut">
+                        <button type="button" class="btn btn-success" onclick="actualizar()">Actualizar</button>
+                        <button type="button" class="btn btn-danger" onclick="eliminar()">Eliminar</button>
+                    </div>
+                </form>
+            </div>
 
         </div>
         

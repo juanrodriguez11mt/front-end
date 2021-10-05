@@ -16,22 +16,46 @@
             <!-- Content here -->
             <h1>Renta de carros G24</h1>
 
-            <nav class="nav justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link" href="registrar.html">Registrar</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="actualizar.html">Actualizar</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Eliminar</a>
-                </li>
-                <li class="nav-item">
-                    <button type="button" class="btn btn-outline-primary" onclick="cargarLista()">Cargar lista</button>
-                </li>
-            </nav>
+            <br>
+
+            <div class="container" style="width: 400px;">
+                <h3>Registrar Carro</h3>
+                <form id="car-form">
+                    <div>
+                        <label>ID</label>
+                        <input id="car-id" type="number"/>
+                    </div>
+                    <div>
+                        <label>Marca</label>
+                        <input id="car-brand" type="text"/>
+                    </div>
+                    <div>
+                        <label>Modelo</label>
+                        <input id="car-model" type="number"/>
+                    </div>
+                    <div>
+                        <label>Categoría</label>
+                        <input id="car-category" type="number"/>
+                    </div>
+    
+                    <hr>
+    
+                    <div class="mx-aut">
+                        <button type="button" class="btn btn-success" onclick="registrar()">Actualizar</button>
+                        <button type="button" class="btn btn-primary" onclick="limpiarFormulario()">Limpiar</button>
+                    </div>
+                </form>
+            </div>
 
             <br>
+
+            <hr>
+
+            <nav class="nav justify-content-end">
+                <li class="nav-item">
+                    <button type="button" class="btn btn-outline-primary" onclick="cargarLista()">Recargar lista</button>
+                </li>
+            </nav>
 
             <table class="table" id="cars-table">
                 <thead>
@@ -55,5 +79,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     <script src="js/operaciones.js"></script>
+    <script>cargarLista()</script>
 
 </html>
