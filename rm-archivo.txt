@@ -1,0 +1,2 @@
+Esta es una prueba para mi rama en el proyecto fron-end en github
+ls ---> Comando para ver todos los archivos en mi carpeta desde el terminal
