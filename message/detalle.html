@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Detalle mensaje</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link href="/css/main.css" rel="stylesheet" >
+</head>
+
+    <body>
+
+        <div class="container">
+            <!-- Content here -->
+            <hr>
+            <nav class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link" href="/index.html">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Volver a lista</a>
+                </li>
+            </nav>
+            <hr>
+
+            <h1>Detalles mensaje</h1>
+
+            <span id="mensaje"></span>
+
+            <div class="container" style="width: 400px;">
+                <form id="message-form" style="display: none;">
+                    <div>
+                        <label>ID</label>
+                        <input id="message-id" type="number" disabled/>
+                    </div>
+                    <div>
+                        <label>Mensaje</label>
+                        <input id="message-message" type="text" disabled/>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="mx-aut">
+                        <button type="button" class="btn btn-success" onclick="actualizar()">Actualizar</button>
+                        <button type="button" class="btn btn-danger" onclick="eliminar()">Eliminar</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        
+    </body>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <script src="/js/operaciones-message.js" ></script>
+    <script>cargarDetalles();</script>
+
+</html>
