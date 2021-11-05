@@ -2,6 +2,6 @@ form label {
     display: block !important;
 }
 
-form input {
+form input, form select {
     width: 100%;
 }

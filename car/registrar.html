@@ -33,20 +33,26 @@
             <div class="container" style="width: 400px;">
                 <form id="car-form">
                     <div>
-                        <label>ID</label>
-                        <input id="car-id" type="number" />
-                    </div>
-                    <div>
                         <label>Marca</label>
                         <input id="car-brand" type="text" />
                     </div>
                     <div>
-                        <label>Modelo</label>
-                        <input id="car-model" type="number" />
+                        <label>Nombre</label>
+                        <input id="car-nombre" type="text" />
                     </div>
                     <div>
-                        <label>Categoría</label>
-                        <input id="car-category" type="number" />
+                        <label>Año</label>
+                        <input id="car-anio" type="number" />
+                    </div>
+                    <div>
+                        <label>Descrición</label>
+                        <input id="car-description" type="text" />
+                    </div>
+                    <div>
+                        <label>Gama</label>
+                        <select id="car-gama">
+                            <option value="-1">Seleccionar gama...</option>
+                        </select>
                     </div>
                     
                     <hr>
@@ -66,5 +72,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     <script src="/js/operaciones.js" ></script>
+    <script>cargarGamas()</script>
 
 </html>

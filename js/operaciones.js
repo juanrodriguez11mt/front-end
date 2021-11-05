@@ -1,5 +1,33 @@
 var ruta = "https://g55a3c31906132b-basedatosrenta.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/car/car";
 
+function cargarGamas() {
+    $.ajax({
+        url: 'http://132.226.253.34/api/Gama/all',
+        data: { },
+        type: 'GET',
+        dataType: 'json',
+        crossDomain: true, 
+
+        success: function(data) {
+            var idGamaCar = -2;
+            for(var i=0; i<data.length; i ++) {
+                var selected = '';
+                if (data[i].idGama == idGamaCar) {
+                    selected = 'selected';
+                }
+                $('#car-gama')
+                    .append('<option value="' + data[i].idGama + '" ' + selected + '>' + data[i].name + '</option>');
+            }
+        }, 
+        error: function(e, status) {
+            console.log(e)
+        },
+        complete: function (e) {
+            console.log('Petición realizada')
+        }
+    })
+}
+
 function cargarLista() {
     $('#mensaje').text("Cargando datos ...");
     listaCarros();

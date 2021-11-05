@@ -1,0 +1,83 @@
+
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="Juan Pablo" >
+        <meta name="description" content="Mi ejercio HTML" >
+        <meta name="keywords" content="ejercicio html básico universidad sergio arboleda" >
+        <title>Ejercicio HTML</title>
+        <link rel="stylesheet" type="text/css" href="/css/ejercicio.css" >
+        <style>
+            #texto-ifo {
+                font-weight: bold;
+            }
+        </style>
+        <script src="/js/ejercicio.js" type="text/javascript" ></script>
+        <script>
+            function saludoDos() {
+                alert('Saludo dos')
+            }
+        </script>
+    </head>
+    <body>
+        <h1>
+            <marquee bgcolor="grey" behavior="alternate" direcition="right">Ejercicio básico HTML</marquee>
+        </h1>
+        <h2 style="text-decoration: underline;" >Mi primer ejercicio</h2>
+        <h2>Prueba encabezado</h2>
+        <h3>Universidad Sergio Arboleda</h3>
+
+        <select id="gama" style="text-align: right;" onchange="mostrarValor(this)" >
+            <option value="1">Clásica</option>
+            <option value="2" selected>Básica</option>
+            <option value="3">Elite</option>
+            <option value="4">Diamante</option>
+            <option value="5">Deportiva</option>
+        </select>
+
+        <br><br>
+
+        <button type="button" onclick="sumarConteo()" >Conteo</button>
+        <button type="button" onclick="restarConteo()" >Restar conteo</button>
+        <button type="button" onclick="saludoDos()">Saludo dos</button>
+        <button type="button" onclick="resumen()">Reporte dos</button>
+
+        <br><br>
+
+        <input type="text" id="nombre" placeholder="Nombre" onfocus="resaltar(this)" onblur="liberar(this)">
+        <input type="text" id="apellido" placeholder="Apellido" onfocus="resaltar(this)" onblur="liberar(this)">
+
+        <br><br>
+
+        <p class="texto-inicial" style="text-align: center;">
+            <del>This is the first paragraph of text.</del>
+            This is the first paragraph of text.
+            This is the first paragraph of text.
+            This is the first paragraph of text
+        </p>
+        <br>
+        <p id="texto-ifo" class="texto-inicial">
+            This is the first paragraph of text2.
+            This is the first paragraph of text2.
+            This is the first paragraph of text2.
+            This is the first paragraph of text2
+        </p>
+        <p class="texto-final">
+            This is the first paragraph of text2.
+            This is the first paragraph of text2.
+            This is the first paragraph of text2.
+            This is the first paragraph of text2
+        </p>
+
+        <img src="/images/logo.jpg" width="450px" height="300px" alt="Logo de la universidad" title="Logo universidad">
+        <br>
+        <img src="https://pbs.twimg.com/profile_images/593451166698110979/5E5ALDjD.jpg" width="200px" height="200px" >
+        <br><br>
+
+        <a href="https://es-la.facebook.com/usergioarboleda/" target="_blank">facebook</a>
+        <a href="https://twitter.com/USergioArboleda" target="_blank">twitter</a>
+    </body>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</html>
