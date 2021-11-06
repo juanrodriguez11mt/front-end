@@ -106,7 +106,7 @@ function reportePeriodo() {
             for (var i=0; i<items.length; i++)
             {
                 var item = items[i]
-                var stars = item.score == null ? '' : item.score.stars;
+                var stars = item.score == null ? '<a href="/reservation/score/registrar.html?id=' + item.idReservation + '">Calificar</a>' : '<a href="/reservation/score/detalle.html?id=' + item.score.idScore + '">Detalle</a>';
                 $('#report-table tbody')
                     .append('<tr>' +
                             '<td class="col">' + item.idReservation + '</td>' +
