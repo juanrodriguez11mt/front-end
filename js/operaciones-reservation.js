@@ -1,31 +1,125 @@
-var ruta = "https://g55a3c31906132b-basedatosrenta.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/client/client";
+var ruta = dominio + "Reservation/";
+
+function minStartDate() {
+    var startDateVal = $('#reservation-start-date').val();
+    var date = startDateVal == '' || startDateVal == undefined ? new Date() : new Date(startDateVal)
+    return date.toISOString().split('T')[0]
+}
+
+function minDevolutionDate() {
+    var startDateVal = $('#reservation-start-date').val();
+    var date = startDateVal == '' || startDateVal == undefined ? new Date() : new Date(startDateVal)
+    date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+    return date.toISOString().split('T')[0]
+}
+
+function formatDate(reservationDate) {
+    var date = new Date(reservationDate);
+    var day = ("0" + date.getDate()).slice(-2);
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    return date.getFullYear() + "-" + month + "-" + day ;
+}
+
+function printStatus(status) {
+    switch(status) {
+        case "created":
+            return "Creado";
+        case "completed":
+            return "Completado";
+        case "cancelled":
+            return "Cancelado";
+        default:
+            return status;
+    }
+}
+
+function cargarListas() {
+    listaClientes(-1);
+    listaCarros(-1)
+}
+
+function listaClientes(idClientReservation) {
+    $.ajax({
+        url: dominio + 'Client/all',
+        data: { },
+        type: 'GET',
+        dataType: 'json',
+        crossDomain: true, 
+
+        success: function(data) {
+            for(var i=0; i<data.length; i ++) {
+                var selected = '';
+                if (data[i].idClient == idClientReservation) {
+                    selected = 'selected';
+                }
+                $('#reservation-client')
+                    .append('<option value="' + data[i].idClient + '" ' + selected + '>' + data[i].name + '</option>');
+            }
+        }, 
+        error: function(e, status) {
+            console.log(e)
+        },
+        complete: function (e) {
+            console.log('Petición realizada')
+        }
+    })
+}
+
+function listaCarros(idCarReservation) {
+    $.ajax({
+        url: dominio + 'Car/all',
+        data: { },
+        type: 'GET',
+        dataType: 'json',
+        crossDomain: true, 
+
+        success: function(data) {
+            for(var i=0; i<data.length; i ++) {
+                var selected = '';
+                if (data[i].idCar == idCarReservation) {
+                    selected = 'selected';
+                }
+                $('#reservation-car')
+                    .append('<option value="' + data[i].idCar + '" ' + selected + '>' + data[i].name + '-' + data[i].brand + ' (' + data[i].year + ')' + '</option>');
+            }
+        }, 
+        error: function(e, status) {
+            console.log(e)
+        },
+        complete: function (e) {
+            console.log('Petición realizada')
+        }
+    })
+}
 
 function cargarLista() {
     $('#mensaje').text("Cargando datos ...");
-    listaCarros();
+    lista();
 }
 
-function listaCarros() {
-    $('#clients-table tbody').empty();
+function lista() {
+    $('#reservations-table tbody').empty();
     $.ajax({    
-        url : ruta,
+        url : ruta + "all",
         data : { },
         type : 'GET',
         dataType : 'json',
         crossDomain: true,
     
         success : function(response) {
-            var items = response.items;
+            var items = response;
             for (var i=0; i<items.length; i++)
             {
                 var item = items[i]
-                $('#clients-table tbody')
+                var stars = item.score == null ? '' : item.score.stars;
+                $('#reservations-table tbody')
                     .append('<tr>' +
-                                '<td class="col">' + item.id + '</td>' +
-                                '<td class="col">' + item.name + '</td>' +
-                                '<td class="col">' + item.email + '</td>' +
-                                '<td class="col">' + item.age + '</td>' +
-                                '<td class="col"><a href="detalle.html?id=' + item.id + '">Detalle</td>' +
+                                '<td class="col">' + item.idReservation + '</td>' +
+                                '<td class="col">' + formatDate(item.startDate) + '</td>' +
+                                '<td class="col">' + formatDate(item.devolutionDate) + '</td>' +
+                                '<td class="col">' + printStatus(item.status) + '</td>' +
+                                '<td class="col">' + stars + '</td>' +
+                                '<td class="col"><a href="detalle.html?id=' + item.idReservation + '">Detalle</td>' +
                             '</tr>');
             };
         },
@@ -43,28 +137,28 @@ function cargarDetalles() {
     $('#mensaje').text("Cargando datos ...");
     var id = obtenerParametroId();
     $.ajax({    
-        url : ruta + "/" + id,
+        url : ruta + id,
         data : { },
         type : 'GET',
         dataType : 'json',
         crossDomain: true,
         
         success : function(response) {
-            var items = response.items;
-            if (items.length < 1) {
-                alert('No fue posible cargar los detalles del cliente')
-            }
-            else {
-                var item = items[0];
-                $("#client-form").css("display", "block");
-                $('#client-id').val(item.id);
-                $('#client-name').val(item.name);
-                $('#client-age').val(item.age);
-                $('#client-email').val(item.email);
-                $('#client-name').prop("disabled", false)
-                $('#client-age').prop("disabled", false)
-                $('#client-email').prop("disabled", false)
-            }
+            var item = response;
+            var stars = item.score == null ? 'N/A' : item.score.stars;
+            var observations = item.score == null ? 'N/A' : item.score.stars;
+            $("#reservation-form").css("display", "block");
+            $('#reservation-id').val(item.idReservation);
+            $('#reservation-start-date').val(formatDate(item.startDate));
+            $('#reservation-devolution-date').val(formatDate(item.devolutionDate));
+            $('#reservation-status').val(item.status);
+            $('#reservation-score-stars').val(stars);
+            $('#reservation-score-message').val(observations);
+            $('#reservation-start-date').prop("disabled", false)
+            $('#reservation-devolution-date').prop("disabled", false)
+            $('#reservation-status').prop("disabled", false)
+            listaCarros(item.car.idCar)
+            listaClientes(item.client.idClient)
         },
         error : function(xhr, status) {
             console.log('ha sucedido un problema');
@@ -93,25 +187,28 @@ function obtenerParametroId() {
 };
 
 function limpiarFormulario() {
-    $("#client-id").val("");
-    $("#client-name").val("");
-    $("#client-age").val("");
-    $("#client-email").val("");
+    $('#reservation-id').val("");
+    $('#reservation-start-date').val(formatDate(""));
+    $('#reservation-devolution-date').val(formatDate(""));
+    $('#reservation-status').val("");
+    $('#reservation-car').val("");
+    $('#reservation-client').val("");
 }
 
 function actualizar() {
-    $('#client-name').prop("disabled", true)
-    $('#client-age').prop("disabled", true)
-    $('#client-email').prop("disabled", true)
+    $('#reservation-start-date').prop("disabled", true)
+    $('#reservation-devolution-date').prop("disabled", true)
+    $('#reservation-status').prop("disabled", true)
+
     var body = { 
-        id: $("#client-id").val(),
-        name: $("#client-name").val(),
-        age: $("#client-age").val(),
-        email: $("#client-email").val(),
+        idReservation: $('#reservation-id').val(),
+        startDate: $('#reservation-start-date').val(),
+        devolutionDate: $('#reservation-devolution-date').val(),
+        status: $('#reservation-status').val(),
     }
     
     $.ajax({    
-        url : ruta,
+        url : ruta + "update",
         data : JSON.stringify(body),
         type : 'PUT',
         contentType: 'application/json',
@@ -124,28 +221,24 @@ function actualizar() {
         },
         complete : function(xhr, status) {
             console.log('Petición realizada');
-            $('#client-name').prop("disabled", false)
-            $('#client-age').prop("disabled", false)
-            $('#client-email').prop("disabled", false)
+            $('#reservation-start-date').prop("disabled", false)
+            $('#reservation-devolution-date').prop("disabled", false)
+            $('#reservation-status').prop("disabled", false)
         }
     });
 }
 
 function eliminar() {
-    if (confirm("¿Está seguro de eliminar el registro?")) {
-        var body = { 
-            id: $("#client-id").val()
-        }
-    
+    if (confirm("¿Está seguro de eliminar el registro?")) {    
         $.ajax({    
-            url : ruta,
-            data : JSON.stringify(body),
+            url : ruta + $("#reservation-id").val(),
+            data : {},
             type : 'DELETE',
             contentType: 'application/json',
             
             success : function(response, status) {
                 alert('Registro eliminado');
-                $('#client-form').css("display", "none");
+                $('#reservation-form').css("display", "none");
                 $('#mensaje').text("No hay registro disponible");
             },
             error : function(xhr, status) {
@@ -159,20 +252,26 @@ function eliminar() {
 }
 
 function registrar() {
-    $('#client-id').prop("disabled", true)
-    $('#client-name').prop("disabled", true)
-    $('#client-age').prop("disabled", true)
-    $('#client-email').prop("disabled", true)
+    $('#reservation-start-date').prop("disabled", true)
+    $('#reservation-devolution-date').prop("disabled", true)
+    $('#reservation-status').prop("disabled", true)
+    $('#reservation-car').prop("disabled", true)
+    $('#reservation-client').prop("disabled", true)
 
     var body = { 
-        id: $("#client-id").val(),
-        name: $("#client-name").val(),
-        age: $("#client-age").val(),
-        email: $("#client-email").val(),
+        startDate: $('#reservation-start-date').val(),
+        devolutionDate: $('#reservation-devolution-date').val(),
+        status: $('#reservation-status').val() == "" ? null : $('#reservation-status').val(),
+        car: {
+            idCar: $('#reservation-car').val()
+        },
+        client: {
+            idClient: $('#reservation-client').val()
+        }
     }
     
     $.ajax({    
-        url : ruta,
+        url : ruta + "save",
         data : JSON.stringify(body),
         type : 'POST',
         contentType: 'application/json',
@@ -186,10 +285,11 @@ function registrar() {
         },
         complete : function(xhr, status) {
             console.log('Petición realizada');
-            $('#client-id').prop("disabled", false)
-            $('#client-name').prop("disabled", false)
-            $('#client-age').prop("disabled", false)
-            $('#client-email').prop("disabled", false)
+            $('#reservation-start-date').prop("disabled", false)
+            $('#reservation-devolution-date').prop("disabled", false)
+            $('#reservation-status').prop("disabled", false)
+            $('#reservation-car').prop("disabled", false)
+            $('#reservation-client').prop("disabled", false)
         }
     });
 }

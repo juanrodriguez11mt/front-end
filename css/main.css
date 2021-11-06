@@ -5,3 +5,11 @@ form label {
 form input, form select {
     width: 100%;
 }
+
+form {
+    padding: 20px 0;
+}
+
+.report-status *{
+    font-size: 20px;
+}

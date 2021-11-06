@@ -50,7 +50,6 @@ function listaCarros() {
             for (var i=0; i<items.length; i++)
             {
                 var item = items[i]
-                var gamaVal = item.gama == null ? "-1" : item.gama.idGama;
                 $('#cars-table tbody')
                     .append('<tr>' +
                                 '<td class="col">' + item.idCar + '</td>' +
@@ -58,7 +57,6 @@ function listaCarros() {
                                 '<td class="col">' + item.brand + '</td>' +
                                 '<td class="col">' + item.year + '</td>' +
                                 '<td class="col">' + item.description + '</td>' +
-                                '<td class="col">' + gamaVal + '</td>' +
                                 '<td class="col"><a href="detalle.html?id=' + item.idCar + '">Detalle</td>' +
                             '</tr>');
             };

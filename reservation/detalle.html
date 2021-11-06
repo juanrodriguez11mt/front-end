@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Detalle carro</title>
+    <title>Detalle reserva</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
     <!-- Latest compiled and minified CSS -->
@@ -23,37 +23,65 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.html">Volver a lista</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="reportes/index.html">Reportes</a>
+                </li>
             </nav>
             <hr>
 
-            <h1>Detalles carro</h1>
+            <h1>Detalles reserva</h1>
 
             <span id="mensaje"></span>
 
             <div class="container" style="width: 400px;">
-                <form id="car-form" style="display: none;">
+                <form id="reservation-form" style="display: none;" method="dialog" onsubmit="actualizar()">
                     <div>
                         <label>ID</label>
-                        <input id="car-id" type="number" disabled/>
+                        <input id="reservation-id" type="number" disabled/>
                     </div>
                     <div>
-                        <label>Marca</label>
-                        <input id="car-brand" type="text" disabled/>
+                        <label>Fecha inicio</label>
+                        <input id="reservation-start-date" type="date" placeholder="yyyy-mm-dd" required/>
                     </div>
                     <div>
-                        <label>Modelo</label>
-                        <input id="car-model" type="number" disabled/>
+                        <label>Fecha devolución</label>
+                        <input id="reservation-devolution-date" type="date" placeholder="yyyy-mm-dd"  required/>
                     </div>
                     <div>
-                        <label>Categoría</label>
-                        <input id="car-category" type="number" disabled/>
+                        <label>Estado</label>
+                        <select id="reservation-status" required>
+                            <option value="">Seleccionar estado...</option>
+                            <option value="created">Creado</option>
+                            <option value="completed">Completado</option>
+                            <option value="cancelled">Cancelado</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Cliente</label>
+                        <select id="reservation-client" disabled>
+                            <option value="">Seleccionar cliente...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Carro</label>
+                        <select id="reservation-car" disabled>
+                            <option value="">Seleccionar carro...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Puntaje calificación</label>
+                        <input id="reservation-score-stars" type="text" disabled/>
+                    </div>
+                    <div>
+                        <label>Comentario calificación</label>
+                        <input id="reservation-score-message" type="text" disabled/>
                     </div>
                     
                     <hr>
                     
                     <div class="mx-aut">
-                        <button type="button" class="btn btn-success" onclick="actualizar()">Actualizar</button>
-                        <button type="button" class="btn btn-danger" onclick="eliminar()">Eliminar</button>
+                        <button type="submit" class="btn btn-success">Actualizar</button>
+                        <button type="button" class="btn btn-primary" onclick="eliminar()">Eliminar</button>
                     </div>
                 </form>
             </div>

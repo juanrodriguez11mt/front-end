@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Registrar carro</title>
+    <title>Registrar reserva</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
 
     <!-- Latest compiled and minified CSS -->
@@ -23,43 +23,55 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.html">Volver a lista</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="reportes/index.html">Reportes</a>
+                </li>
             </nav>
             <hr>
             
-            <h1>Registrar carro</h1>
+            <h1>Registrar reserva</h1>
 
             <span id="mensaje"></span>
 
             <div class="container" style="width: 400px;">
-                <form id="car-form">
+                <form id="reservation-form" method="dialog" onsubmit="registrar()">
                     <div>
-                        <label>Marca</label>
-                        <input id="car-brand" type="text" />
+                        <label>Fecha inicio</label>
+                        <input id="reservation-start-date" type="date" placeholder="yyyy-mm-dd" 
+                                onfocus="this.min=minStartDate()" required/>
                     </div>
                     <div>
-                        <label>Nombre</label>
-                        <input id="car-nombre" type="text" />
+                        <label>Fecha devolución</label>
+                        <input id="reservation-devolution-date" type="date" placeholder="yyyy-mm-dd" 
+                                onfocus="this.min=minDevolutionDate();" required/>
                     </div>
                     <div>
-                        <label>Año</label>
-                        <input id="car-anio" type="number" />
+                        <label>Estado</label>
+                        <select id="reservation-status" >
+                            <option value="">Seleccionar estado...</option>
+                            <option value="created">Creado</option>
+                            <option value="completed">Completado</option>
+                            <option value="cancelled">Cancelado</option>
+                        </select>
                     </div>
                     <div>
-                        <label>Descrición</label>
-                        <input id="car-description" type="text" />
+                        <label>Cliente</label>
+                        <select id="reservation-client" required>
+                            <option value="">Seleccionar cliente...</option>
+                        </select>
                     </div>
                     <div>
-                        <label>Gama</label>
-                        <select id="car-gama">
-                            <option value="-1">Seleccionar gama...</option>
+                        <label>Carro</label>
+                        <select id="reservation-car" required>
+                            <option value="">Seleccionar carro...</option>
                         </select>
                     </div>
                     
                     <hr>
                     
                     <div class="mx-aut">
-                        <button type="button" class="btn btn-success" onclick="registrar()">Registrar</button>
-                        <button type="button" class="btn btn-primary" onclick="limpiarFormulario()">Limpiar</button>
+                        <button type="submit" class="btn btn-success">Registrar</button>
+                        <button type="reset" class="btn btn-primary">Limpiar</button>
                     </div>
                 </form>
             </div>
@@ -73,6 +85,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     <script src="/js/constantes.js"></script>
     <script src="/js/operaciones-reservation.js" ></script>
-    <script>cargarGamas()</script>
+    <script>cargarListas();</script>
 
 </html>

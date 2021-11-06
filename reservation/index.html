@@ -23,10 +23,13 @@
                 <li class="nav-item">
                     <a class="nav-link" href="registrar.html">Registrar</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="reportes/index.html">Reportes</a>
+                </li>
             </nav>
             <hr>
             
-            <h1>Renta de carros G24 - Carros</h1>
+            <h1>Renta de carros G24 - Reservaciones</h1>
 
             <div class="nav justify-content-end">
                 <button type="button" class="btn btn-outline-primary" onclick="cargarLista()">Recargar lista</button>
@@ -34,13 +37,14 @@
 
             <br>
 
-            <table class="table" id="cars-table">
+            <table class="table" id="reservations-table">
                 <thead>
                     <tr>
                         <th class="col">ID</th>
-                        <th class="col">Marca</th>
-                        <th class="col">Modelo</th>
-                        <th class="col">Categoria</th>
+                        <th class="col">Fecha inicio</th>
+                        <th class="col">Fecha devolución</th>
+                        <th class="col">Estado</th>
+                        <th class="col">Calificación</th>
                         <th class="col"></th>
                     </tr>
                 </thead>
