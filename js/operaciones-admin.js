@@ -1,4 +1,4 @@
-var ruta = dominio + "Client/";
+var ruta = dominio + "Admin/";
 
 function cargarLista() {
     $('#mensaje').text("Cargando datos ...");
@@ -6,7 +6,7 @@ function cargarLista() {
 }
 
 function listaClientes() {
-    $('#clients-table tbody').empty();
+    $('#admins-table tbody').empty();
     $.ajax({    
         url : ruta + "all",
         data : { },
@@ -19,14 +19,13 @@ function listaClientes() {
             for (var i=0; i<items.length; i++)
             {
                 var item = items[i]
-                $('#clients-table tbody')
+                $('#admins-table tbody')
                     .append('<tr>' +
-                                '<td class="col">' + item.idClient + '</td>' +
+                                '<td class="col">' + item.idAdmin + '</td>' +
                                 '<td class="col">' + item.name + '</td>' +
-                                '<td class="col">' + item.age + '</td>' +
                                 '<td class="col">' + item.email + '</td>' +
                                 '<td class="col">' + '*'.repeat(item.password.length) + '</td>' +
-                                '<td class="col"><a href="detalle.html?id=' + item.idClient + '">Detalle</td>' +
+                                '<td class="col"><a href="detalle.html?id=' + item.idAdmin + '">Detalle</td>' +
                             '</tr>');
             };
         },
@@ -52,16 +51,14 @@ function cargarDetalles() {
         
         success : function(response) {
             var item = response;
-            $("#client-form").css("display", "block");
-            $('#client-id').val(item.idClient);
-            $('#client-name').val(item.name);
-            $('#client-age').val(item.age);
-            $('#client-email').val(item.email);
-            $('#client-password').val(item.password);
-            $('#client-name').prop("disabled", false)
-            $('#client-age').prop("disabled", false)
-            $('#client-email').prop("disabled", false)
-            $('#client-password').prop("disabled", false)
+            $("#admin-form").css("display", "block");
+            $('#admin-id').val(item.idAdmin);
+            $('#admin-name').val(item.name);
+            $('#admin-email').val(item.email);
+            $('#admin-password').val(item.password);
+            $('#admin-name').prop("disabled", false)
+            $('#admin-email').prop("disabled", false)
+            $('#admin-password').prop("disabled", false)
         },
         error : function(xhr, status) {
             console.log('ha sucedido un problema');
@@ -90,24 +87,21 @@ function obtenerParametroId() {
 };
 
 function limpiarFormulario() {
-    $("#client-id").val("");
-    $("#client-name").val("");
-    $("#client-age").val("");
-    $("#client-email").val("");
-    $("#client-password").val("");
+    $("#admin-id").val("");
+    $("#admin-name").val("");
+    $("#admin-email").val("");
+    $("#admin-password").val("");
 }
 
 function actualizar() {
-    $('#client-name').prop("disabled", true)
-    $('#client-age').prop("disabled", true)
-    $('#client-email').prop("disabled", true)
-    $('#client-password').prop("disabled", true)
+    $('#admin-name').prop("disabled", true)
+    $('#admin-email').prop("disabled", true)
+    $('#admin-password').prop("disabled", true)
     var body = { 
-        idClient: $("#client-id").val(),
-        name: $("#client-name").val(),
-        age: $("#client-age").val(),
-        email: $("#client-email").val(),
-        password: $("#client-password").val(),
+        idAdmin: $("#admin-id").val(),
+        name: $("#admin-name").val(),
+        email: $("#admin-email").val(),
+        password: $("#admin-password").val(),
     }
     
     $.ajax({    
@@ -124,10 +118,9 @@ function actualizar() {
         },
         complete : function(xhr, status) {
             console.log('Petición realizada');
-            $('#client-name').prop("disabled", false)
-            $('#client-age').prop("disabled", false)
-            $('#client-email').prop("disabled", false)
-            $('#client-password').prop("disabled", false)
+            $('#admin-name').prop("disabled", false)
+            $('#admin-email').prop("disabled", false)
+            $('#admin-password').prop("disabled", false)
         }
     });
 }
@@ -135,14 +128,14 @@ function actualizar() {
 function eliminar() {
     if (confirm("¿Está seguro de eliminar el registro?")) {    
         $.ajax({    
-            url : ruta + $("#client-id").val(),
+            url : ruta + $("#admin-id").val(),
             data : {},
             type : 'DELETE',
             contentType: 'application/json',
             
             success : function(response, status) {
                 alert('Registro eliminado');
-                $('#client-form').css("display", "none");
+                $('#admin-form').css("display", "none");
                 $('#mensaje').text("No hay registro disponible");
             },
             error : function(xhr, status) {
@@ -156,16 +149,14 @@ function eliminar() {
 }
 
 function registrar() {
-    $('#client-password').prop("disabled", true)
-    $('#client-name').prop("disabled", true)
-    $('#client-age').prop("disabled", true)
-    $('#client-email').prop("disabled", true)
+    $('#admin-password').prop("disabled", true)
+    $('#admin-name').prop("disabled", true)
+    $('#admin-email').prop("disabled", true)
 
     var body = { 
-        password: $("#client-password").val(),
-        name: $("#client-name").val(),
-        age: $("#client-age").val(),
-        email: $("#client-email").val(),
+        password: $("#admin-password").val(),
+        name: $("#admin-name").val(),
+        email: $("#admin-email").val(),
     }
     
     $.ajax({    
@@ -183,10 +174,9 @@ function registrar() {
         },
         complete : function(xhr, status) {
             console.log('Petición realizada');
-            $('#client-password').prop("disabled", false)
-            $('#client-name').prop("disabled", false)
-            $('#client-age').prop("disabled", false)
-            $('#client-email').prop("disabled", false)
+            $('#admin-password').prop("disabled", false)
+            $('#admin-name').prop("disabled", false)
+            $('#admin-email').prop("disabled", false)
         }
     });
 }

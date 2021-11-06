@@ -1,13 +1,12 @@
-var ruta = dominio + "Message/"
+var ruta = dominio + "Car/";
 
-function cargarListas() {
-    listaClientes(-1);
-    listaCarros(-1)
+function cargarGamas() {
+    listaGamas(-1)
 }
 
-function listaClientes(idClientMessage) {
+function listaGamas(idGamaCar) {
     $.ajax({
-        url: dominio + 'Client/all',
+        url: dominio + 'Gama/all',
         data: { },
         type: 'GET',
         dataType: 'json',
@@ -16,38 +15,11 @@ function listaClientes(idClientMessage) {
         success: function(data) {
             for(var i=0; i<data.length; i ++) {
                 var selected = '';
-                if (data[i].idClient == idClientMessage) {
+                if (data[i].idGama == idGamaCar) {
                     selected = 'selected';
                 }
-                $('#message-client')
-                    .append('<option value="' + data[i].idClient + '" ' + selected + '>' + data[i].name + '</option>');
-            }
-        }, 
-        error: function(e, status) {
-            console.log(e)
-        },
-        complete: function (e) {
-            console.log('Petición realizada')
-        }
-    })
-}
-
-function listaCarros(idCarMessage) {
-    $.ajax({
-        url: dominio + 'Car/all',
-        data: { },
-        type: 'GET',
-        dataType: 'json',
-        crossDomain: true, 
-
-        success: function(data) {
-            for(var i=0; i<data.length; i ++) {
-                var selected = '';
-                if (data[i].idCar == idCarMessage) {
-                    selected = 'selected';
-                }
-                $('#message-car')
-                    .append('<option value="' + data[i].idCar + '" ' + selected + '>' + data[i].name + '-' + data[i].brand + ' (' + data[i].year + ')' + '</option>');
+                $('#car-gama')
+                    .append('<option value="' + data[i].idGama + '" ' + selected + '>' + data[i].name + '</option>');
             }
         }, 
         error: function(e, status) {
@@ -61,11 +33,11 @@ function listaCarros(idCarMessage) {
 
 function cargarLista() {
     $('#mensaje').text("Cargando datos ...");
-    lista();
+    listaCarros();
 }
 
-function lista() {
-    $('#messages-table tbody').empty();
+function listaCarros() {
+    $('#cars-table tbody').empty();
     $.ajax({    
         url : ruta + "all",
         data : { },
@@ -78,11 +50,16 @@ function lista() {
             for (var i=0; i<items.length; i++)
             {
                 var item = items[i]
-                $('#messages-table tbody')
+                var gamaVal = item.gama == null ? "-1" : item.gama.idGama;
+                $('#cars-table tbody')
                     .append('<tr>' +
-                                '<td class="col">' + item.idMessage + '</td>' +
-                                '<td class="col">' + item.messageText + '</td>' +
-                                '<td class="col"><a href="detalle.html?id=' + item.idMessage + '">Detalle</td>' +
+                                '<td class="col">' + item.idCar + '</td>' +
+                                '<td class="col">' + item.name + '</td>' +
+                                '<td class="col">' + item.brand + '</td>' +
+                                '<td class="col">' + item.year + '</td>' +
+                                '<td class="col">' + item.description + '</td>' +
+                                '<td class="col">' + gamaVal + '</td>' +
+                                '<td class="col"><a href="detalle.html?id=' + item.idCar + '">Detalle</td>' +
                             '</tr>');
             };
         },
@@ -98,9 +75,8 @@ function lista() {
 
 function cargarDetalles() {
     $('#mensaje').text("Cargando datos ...");
-    var id = obtenerParametroId();
     $.ajax({    
-        url : ruta + id,
+        url : ruta + obtenerParametroId(),
         data : { },
         type : 'GET',
         dataType : 'json',
@@ -108,12 +84,17 @@ function cargarDetalles() {
         
         success : function(response) {
             var item = response;
-            $("#message-form").css("display", "block");
-            $('#message-id').val(item.idMessage);
-            $('#message-message').val(item.messageText);
-            $('#message-message').prop("disabled", false)
-            listaCarros(item.car.idCar)
-            listaClientes(item.client.idClient)
+            $("#car-form").css("display", "block");
+            $('#car-id').val(item.idCar);
+            $('#car-brand').val(item.brand);
+            $('#car-name').val(item.name);
+            $('#car-year').val(item.year);
+            $('#car-description').val(item.description);
+            $('#car-brand').prop("disabled", false)
+            $('#car-name').prop("disabled", false)
+            $('#car-year').prop("disabled", false)
+            $('#car-description').prop("disabled", false)
+            listaGamas(item.gama == null ? -1 : item.gama.idGama);
         },
         error : function(xhr, status) {
             console.log('ha sucedido un problema');
@@ -142,17 +123,25 @@ function obtenerParametroId() {
 };
 
 function limpiarFormulario() {
-    $("#message-id").val("");
-    $("#message-message").val("");
-    $('#message-client').val("");
-    $('#message-car').val("");
+    $("#car-id").val("");
+    $("#car-brand").val("");
+    $("#car-name").val("");
+    $("#car-description").val("");
+    $("#car-year").val("");
+    $("#car-gama").val("-1");
 }
 
 function actualizar() {
-    $('#message-message').prop("disabled", true);
+    $('#car-brand').prop("disabled", true)
+    $('#car-name').prop("disabled", true)
+    $('#car-year').prop("disabled", true)
+    $('#car-description').prop("disabled", true)
     var body = { 
-        idMessage: $("#message-id").val(),
-        messageText: $("#message-message").val(),
+        idCar: $("#car-id").val(),
+        brand: $("#car-brand").val(),
+        name: $("#car-name").val(),
+        year: $("#car-year").val(),
+        description: $("#car-description").val(),
     }
     
     $.ajax({    
@@ -169,22 +158,25 @@ function actualizar() {
         },
         complete : function(xhr, status) {
             console.log('Petición realizada');
-            $('#message-message').prop("disabled", false);
+            $('#car-brand').prop("disabled", false)
+            $('#car-name').prop("disabled", false)
+            $('#car-year').prop("disabled", false)
+            $('#car-description').prop("disabled", false)
         }
     });
 }
 
 function eliminar() {
-    if (confirm("¿Está seguro de eliminar el registro?")) {    
+    if (confirm("¿Está seguro de eliminar el registro?")) {
         $.ajax({    
-            url : ruta + $("#message-id").val(),
+            url : ruta + obtenerParametroId(),
             data : {},
             type : 'DELETE',
             contentType: 'application/json',
             
             success : function(response, status) {
                 alert('Registro eliminado');
-                $('#message-form').css("display", "none");
+                $('#car-form').css("display", "none");
                 $('#mensaje').text("No hay registro disponible");
             },
             error : function(xhr, status) {
@@ -198,17 +190,19 @@ function eliminar() {
 }
 
 function registrar() {
-    $('#message-id').prop("disabled", true)
-    $('#message-message').prop("disabled", true)
-    $('#message-client').prop("disabled", true)
-    $('#message-car').prop("disabled", true)
+    $('#car-brand').prop("disabled", true)
+    $('#car-name').prop("disabled", true)
+    $('#car-gama').prop("disabled", true)
+    $('#car-description').prop("disabled", true)
+    $('#car-year').prop("disabled", true)
+
     var body = { 
-        messageText: $("#message-message").val(),
-        client: {
-            idClient: $("#message-client").val()
-        },
-        car: {
-            idCar: $("#message-car").val()
+        brand: $("#car-brand").val(),
+        name: $("#car-name").val(),
+        year: $("#car-year").val(),
+        description: $("#car-description").val(),
+        gama: {
+            idGama: $("#car-gama").val() == -1 ? null : $("#car-gama").val(), 
         }
     }
     
@@ -227,10 +221,11 @@ function registrar() {
         },
         complete : function(xhr, status) {
             console.log('Petición realizada');
-            $('#message-id').prop("disabled", false)
-            $('#message-message').prop("disabled", false)
-            $('#message-client').prop("disabled", false)
-            $('#message-car').prop("disabled", false)
+            $('#car-brand').prop("disabled", false)
+            $('#car-name').prop("disabled", false)
+            $('#car-year').prop("disabled", false)
+            $('#car-gama').prop("disabled", false)
+            $('#car-description').prop("disabled", false)
         }
     });
 }

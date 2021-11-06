@@ -1,12 +1,12 @@
-var ruta = dominio + "Client/";
+var ruta = dominio + "Gama/";
 
 function cargarLista() {
     $('#mensaje').text("Cargando datos ...");
-    listaClientes();
+    listaCarros();
 }
 
-function listaClientes() {
-    $('#clients-table tbody').empty();
+function listaCarros() {
+    $('#gamas-table tbody').empty();
     $.ajax({    
         url : ruta + "all",
         data : { },
@@ -19,14 +19,12 @@ function listaClientes() {
             for (var i=0; i<items.length; i++)
             {
                 var item = items[i]
-                $('#clients-table tbody')
+                $('#gamas-table tbody')
                     .append('<tr>' +
-                                '<td class="col">' + item.idClient + '</td>' +
+                                '<td class="col">' + item.idGama + '</td>' +
                                 '<td class="col">' + item.name + '</td>' +
-                                '<td class="col">' + item.age + '</td>' +
-                                '<td class="col">' + item.email + '</td>' +
-                                '<td class="col">' + '*'.repeat(item.password.length) + '</td>' +
-                                '<td class="col"><a href="detalle.html?id=' + item.idClient + '">Detalle</td>' +
+                                '<td class="col">' + item.description + '</td>' +
+                                '<td class="col"><a href="detalle.html?id=' + item.idGama + '">Detalle</td>' +
                             '</tr>');
             };
         },
@@ -52,16 +50,12 @@ function cargarDetalles() {
         
         success : function(response) {
             var item = response;
-            $("#client-form").css("display", "block");
-            $('#client-id').val(item.idClient);
-            $('#client-name').val(item.name);
-            $('#client-age').val(item.age);
-            $('#client-email').val(item.email);
-            $('#client-password').val(item.password);
-            $('#client-name').prop("disabled", false)
-            $('#client-age').prop("disabled", false)
-            $('#client-email').prop("disabled", false)
-            $('#client-password').prop("disabled", false)
+            $("#gama-form").css("display", "block");
+            $('#gama-id').val(item.idGama);
+            $('#gama-name').val(item.name);
+            $('#gama-description').val(item.description);
+            $('#gama-name').prop("disabled", false)
+            $('#gama-description').prop("disabled", false)
         },
         error : function(xhr, status) {
             console.log('ha sucedido un problema');
@@ -90,24 +84,18 @@ function obtenerParametroId() {
 };
 
 function limpiarFormulario() {
-    $("#client-id").val("");
-    $("#client-name").val("");
-    $("#client-age").val("");
-    $("#client-email").val("");
-    $("#client-password").val("");
+    $("#gama-id").val("");
+    $("#gama-name").val("");
+    $("#gama-description").val("");
 }
 
 function actualizar() {
-    $('#client-name').prop("disabled", true)
-    $('#client-age').prop("disabled", true)
-    $('#client-email').prop("disabled", true)
-    $('#client-password').prop("disabled", true)
+    $('#gama-name').prop("disabled", true)
+    $('#gama-description').prop("disabled", true)
     var body = { 
-        idClient: $("#client-id").val(),
-        name: $("#client-name").val(),
-        age: $("#client-age").val(),
-        email: $("#client-email").val(),
-        password: $("#client-password").val(),
+        idGama: $("#gama-id").val(),
+        name: $("#gama-name").val(),
+        description: $("#gama-description").val()
     }
     
     $.ajax({    
@@ -124,25 +112,25 @@ function actualizar() {
         },
         complete : function(xhr, status) {
             console.log('Petición realizada');
-            $('#client-name').prop("disabled", false)
-            $('#client-age').prop("disabled", false)
-            $('#client-email').prop("disabled", false)
-            $('#client-password').prop("disabled", false)
+            $('#gama-name').prop("disabled", false)
+            $('#gama-description').prop("disabled", false)
         }
     });
 }
 
 function eliminar() {
-    if (confirm("¿Está seguro de eliminar el registro?")) {    
+    if (confirm("¿Está seguro de eliminar el registro?")) {
+        id = $("#gama-id").val()
+    
         $.ajax({    
-            url : ruta + $("#client-id").val(),
+            url : ruta + id,
             data : {},
             type : 'DELETE',
             contentType: 'application/json',
             
             success : function(response, status) {
                 alert('Registro eliminado');
-                $('#client-form').css("display", "none");
+                $('#gama-form').css("display", "none");
                 $('#mensaje').text("No hay registro disponible");
             },
             error : function(xhr, status) {
@@ -156,16 +144,12 @@ function eliminar() {
 }
 
 function registrar() {
-    $('#client-password').prop("disabled", true)
-    $('#client-name').prop("disabled", true)
-    $('#client-age').prop("disabled", true)
-    $('#client-email').prop("disabled", true)
+    $('#gama-name').prop("disabled", true)
+    $('#gama-description').prop("disabled", true)
 
     var body = { 
-        password: $("#client-password").val(),
-        name: $("#client-name").val(),
-        age: $("#client-age").val(),
-        email: $("#client-email").val(),
+        name: $("#gama-name").val(),
+        description: $("#gama-description").val(),
     }
     
     $.ajax({    
@@ -183,10 +167,9 @@ function registrar() {
         },
         complete : function(xhr, status) {
             console.log('Petición realizada');
-            $('#client-password').prop("disabled", false)
-            $('#client-name').prop("disabled", false)
-            $('#client-age').prop("disabled", false)
-            $('#client-email').prop("disabled", false)
+            $('#gama-id').prop("disabled", false)
+            $('#gama-name').prop("disabled", false)
+            $('#gama-description').prop("disabled", false)
         }
     });
 }

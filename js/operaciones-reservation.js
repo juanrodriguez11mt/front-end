@@ -1,32 +1,4 @@
-var ruta = "https://g55a3c31906132b-basedatosrenta.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/car/car";
-
-function cargarGamas() {
-    $.ajax({
-        url: 'http://132.226.253.34/api/Gama/all',
-        data: { },
-        type: 'GET',
-        dataType: 'json',
-        crossDomain: true, 
-
-        success: function(data) {
-            var idGamaCar = -2;
-            for(var i=0; i<data.length; i ++) {
-                var selected = '';
-                if (data[i].idGama == idGamaCar) {
-                    selected = 'selected';
-                }
-                $('#car-gama')
-                    .append('<option value="' + data[i].idGama + '" ' + selected + '>' + data[i].name + '</option>');
-            }
-        }, 
-        error: function(e, status) {
-            console.log(e)
-        },
-        complete: function (e) {
-            console.log('Petición realizada')
-        }
-    })
-}
+var ruta = "https://g55a3c31906132b-basedatosrenta.adb.sa-saopaulo-1.oraclecloudapps.com/ords/admin/client/client";
 
 function cargarLista() {
     $('#mensaje').text("Cargando datos ...");
@@ -34,7 +6,7 @@ function cargarLista() {
 }
 
 function listaCarros() {
-    $('#cars-table tbody').empty();
+    $('#clients-table tbody').empty();
     $.ajax({    
         url : ruta,
         data : { },
@@ -47,12 +19,12 @@ function listaCarros() {
             for (var i=0; i<items.length; i++)
             {
                 var item = items[i]
-                $('#cars-table tbody')
+                $('#clients-table tbody')
                     .append('<tr>' +
                                 '<td class="col">' + item.id + '</td>' +
-                                '<td class="col">' + item.brand + '</td>' +
-                                '<td class="col">' + item.model + '</td>' +
-                                '<td class="col">' + item.category_id + '</td>' +
+                                '<td class="col">' + item.name + '</td>' +
+                                '<td class="col">' + item.email + '</td>' +
+                                '<td class="col">' + item.age + '</td>' +
                                 '<td class="col"><a href="detalle.html?id=' + item.id + '">Detalle</td>' +
                             '</tr>');
             };
@@ -80,18 +52,18 @@ function cargarDetalles() {
         success : function(response) {
             var items = response.items;
             if (items.length < 1) {
-                alert('No fue posible cargar los detalles del carro')
+                alert('No fue posible cargar los detalles del cliente')
             }
             else {
                 var item = items[0];
-                $("#car-form").css("display", "block");
-                $('#car-id').val(item.id);
-                $('#car-brand').val(item.brand);
-                $('#car-model').val(item.model);
-                $('#car-category').val(item.category_id);
-                $('#car-brand').prop("disabled", false)
-                $('#car-model').prop("disabled", false)
-                $('#car-category').prop("disabled", false)
+                $("#client-form").css("display", "block");
+                $('#client-id').val(item.id);
+                $('#client-name').val(item.name);
+                $('#client-age').val(item.age);
+                $('#client-email').val(item.email);
+                $('#client-name').prop("disabled", false)
+                $('#client-age').prop("disabled", false)
+                $('#client-email').prop("disabled", false)
             }
         },
         error : function(xhr, status) {
@@ -121,21 +93,21 @@ function obtenerParametroId() {
 };
 
 function limpiarFormulario() {
-    $("#car-id").val("");
-    $("#car-brand").val("");
-    $("#car-model").val("");
-    $("#car-category").val("");
+    $("#client-id").val("");
+    $("#client-name").val("");
+    $("#client-age").val("");
+    $("#client-email").val("");
 }
 
 function actualizar() {
-    $('#car-brand').prop("disabled", true)
-    $('#car-model').prop("disabled", true)
-    $('#car-category').prop("disabled", true)
+    $('#client-name').prop("disabled", true)
+    $('#client-age').prop("disabled", true)
+    $('#client-email').prop("disabled", true)
     var body = { 
-        id: $("#car-id").val(),
-        brand: $("#car-brand").val(),
-        model: $("#car-model").val(),
-        category_id: $("#car-category").val(),
+        id: $("#client-id").val(),
+        name: $("#client-name").val(),
+        age: $("#client-age").val(),
+        email: $("#client-email").val(),
     }
     
     $.ajax({    
@@ -152,9 +124,9 @@ function actualizar() {
         },
         complete : function(xhr, status) {
             console.log('Petición realizada');
-            $('#car-brand').prop("disabled", false)
-            $('#car-model').prop("disabled", false)
-            $('#car-category').prop("disabled", false)
+            $('#client-name').prop("disabled", false)
+            $('#client-age').prop("disabled", false)
+            $('#client-email').prop("disabled", false)
         }
     });
 }
@@ -162,7 +134,7 @@ function actualizar() {
 function eliminar() {
     if (confirm("¿Está seguro de eliminar el registro?")) {
         var body = { 
-            id: $("#car-id").val()
+            id: $("#client-id").val()
         }
     
         $.ajax({    
@@ -173,7 +145,7 @@ function eliminar() {
             
             success : function(response, status) {
                 alert('Registro eliminado');
-                $('#car-form').css("display", "none");
+                $('#client-form').css("display", "none");
                 $('#mensaje').text("No hay registro disponible");
             },
             error : function(xhr, status) {
@@ -187,16 +159,16 @@ function eliminar() {
 }
 
 function registrar() {
-    $('#car-id').prop("disabled", true)
-    $('#car-brand').prop("disabled", true)
-    $('#car-model').prop("disabled", true)
-    $('#car-category').prop("disabled", true)
+    $('#client-id').prop("disabled", true)
+    $('#client-name').prop("disabled", true)
+    $('#client-age').prop("disabled", true)
+    $('#client-email').prop("disabled", true)
 
     var body = { 
-        id: $("#car-id").val(),
-        brand: $("#car-brand").val(),
-        model: $("#car-model").val(),
-        category_id: $("#car-category").val(),
+        id: $("#client-id").val(),
+        name: $("#client-name").val(),
+        age: $("#client-age").val(),
+        email: $("#client-email").val(),
     }
     
     $.ajax({    
@@ -214,10 +186,10 @@ function registrar() {
         },
         complete : function(xhr, status) {
             console.log('Petición realizada');
-            $('#car-id').prop("disabled", false)
-            $('#car-brand').prop("disabled", false)
-            $('#car-model').prop("disabled", false)
-            $('#car-category').prop("disabled", false)
+            $('#client-id').prop("disabled", false)
+            $('#client-name').prop("disabled", false)
+            $('#client-age').prop("disabled", false)
+            $('#client-email').prop("disabled", false)
         }
     });
 }
