@@ -13,26 +13,6 @@ function minDevolutionDate() {
     return date.toISOString().split('T')[0]
 }
 
-function formatDate(reservationDate) {
-    var date = new Date(reservationDate);
-    var day = ("0" + date.getDate()).slice(-2);
-    var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    return date.getFullYear() + "-" + month + "-" + day ;
-}
-
-function printStatus(status) {
-    switch(status) {
-        case "created":
-            return "Creado";
-        case "completed":
-            return "Completado";
-        case "cancelled":
-            return "Cancelado";
-        default:
-            return status;
-    }
-}
-
 function cargarListas() {
     listaClientes(-1);
     listaCarros(-1)
@@ -145,26 +125,33 @@ function cargarDetalles() {
         
         success : function(response) {
             var item = response;
-            var stars = item.score == null ? 'N/A' : item.score.stars;
-            var observations = item.score == null ? 'N/A' : item.score.messageText;
-            $("#reservation-form").css("display", "block");
-            $('#reservation-id').val(item.idReservation);
-            $('#reservation-start-date').val(formatDate(item.startDate));
-            $('#reservation-devolution-date').val(formatDate(item.devolutionDate));
-            $('#reservation-status').val(item.status);
-            $('#reservation-score-stars').val(stars);
-            $('#reservation-score-message').val(observations);
-            $('#reservation-start-date').prop("disabled", false)
-            $('#reservation-devolution-date').prop("disabled", false)
-            $('#reservation-status').prop("disabled", false)
-            listaCarros(item.car.idCar)
-            listaClientes(item.client.idClient)
+            if (item != null) {
+                var stars = item.score == null ? 'N/A' : item.score.stars;
+                var observations = item.score == null ? 'N/A' : item.score.messageText;
+                $("#content").show();
+                $('#reservation-id').val(item.idReservation);
+                $('#reservation-start-date').val(formatDate(item.startDate));
+                $('#reservation-devolution-date').val(formatDate(item.devolutionDate));
+                $('#reservation-status').val(item.status);
+                $('#reservation-score-stars').val(stars);
+                $('#reservation-score-message').val(observations);
+                $('#reservation-start-date').prop("disabled", false)
+                $('#reservation-devolution-date').prop("disabled", false)
+                $('#reservation-status').prop("disabled", false)
+                listaCarros(item.car.idCar)
+                listaClientes(item.client.idClient)
+                $('#mensaje').empty();
+            } else {
+                $('#content').empty();
+                $('#mensaje').text("No hay registro disponible");
+            }
         },
         error : function(xhr, status) {
             console.log('ha sucedido un problema');
+            $('#content').empty();
+            $('#mensaje').text("No hay registro disponible");
         },
         complete : function(xhr, status) {
-            $('#mensaje').empty();
             console.log('Petición realizada');
         }
     });
@@ -237,7 +224,7 @@ function eliminar() {
             
             success : function(response, status) {
                 alert('Registro eliminado');
-                $('#reservation-form').css("display", "none");
+                $('#content').empty();
                 $('#mensaje').text("No hay registro disponible");
             },
             error : function(xhr, status) {

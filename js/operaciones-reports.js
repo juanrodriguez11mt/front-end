@@ -7,26 +7,6 @@ function minDateTwo() {
     return date.toISOString().split('T')[0]
 }
 
-function formatDate(reservationDate) {
-    var date = new Date(reservationDate);
-    var day = ("0" + date.getDate()).slice(-2);
-    var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    return date.getFullYear() + "-" + month + "-" + day ;
-}
-
-function printStatus(status) {
-    switch(status) {
-        case "created":
-            return "Creado";
-        case "completed":
-            return "Completado";
-        case "cancelled":
-            return "Cancelado";
-        default:
-            return status;
-    }
-}
-
 function reporteEstado() {
     $('#mensaje').text("Cargando datos ...");
     $('#report-table').empty();
@@ -106,14 +86,12 @@ function reportePeriodo() {
             for (var i=0; i<items.length; i++)
             {
                 var item = items[i]
-                var stars = item.score == null ? '<a href="/reservation/score/registrar.html?id=' + item.idReservation + '">Calificar</a>' : '<a href="/reservation/score/detalle.html?id=' + item.score.idScore + '">Detalle</a>';
                 $('#report-table tbody')
                     .append('<tr>' +
                             '<td class="col">' + item.idReservation + '</td>' +
                             '<td class="col">' + formatDate(item.startDate) + '</td>' +
                             '<td class="col">' + formatDate(item.devolutionDate) + '</td>' +
                             '<td class="col">' + printStatus(item.status) + '</td>' +
-                            '<td class="col">' + stars + '</td>' +
                             '<td class="col"><a href="/reservation/detalle.html?id=' + item.idReservation + '">Detalle</td>' +
                         '</tr>');
             }

@@ -51,20 +51,27 @@ function cargarDetalles() {
         
         success : function(response) {
             var item = response;
-            $("#admin-form").css("display", "block");
-            $('#admin-id').val(item.idAdmin);
-            $('#admin-name').val(item.name);
-            $('#admin-email').val(item.email);
-            $('#admin-password').val(item.password);
-            $('#admin-name').prop("disabled", false)
-            $('#admin-email').prop("disabled", false)
-            $('#admin-password').prop("disabled", false)
+            if (item != null) {
+                $("#content").show();
+                $('#admin-id').val(item.idAdmin);
+                $('#admin-name').val(item.name);
+                $('#admin-email').val(item.email);
+                $('#admin-password').val(item.password);
+                $('#admin-name').prop("disabled", false)
+                $('#admin-email').prop("disabled", false)
+                $('#admin-password').prop("disabled", false)
+                $('#mensaje').empty();
+            } else {
+                $('#content').empty();
+                $('#mensaje').text("No hay registro disponible");
+            }
         },
         error : function(xhr, status) {
             console.log('ha sucedido un problema');
+            $('#content').empty();
+            $('#mensaje').text("No hay registro disponible");
         },
         complete : function(xhr, status) {
-            $('#mensaje').empty();
             console.log('Petición realizada');
         }
     });
@@ -135,7 +142,7 @@ function eliminar() {
             
             success : function(response, status) {
                 alert('Registro eliminado');
-                $('#admin-form').css("display", "none");
+                $('#content').empty();
                 $('#mensaje').text("No hay registro disponible");
             },
             error : function(xhr, status) {

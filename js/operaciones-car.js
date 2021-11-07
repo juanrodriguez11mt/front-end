@@ -71,6 +71,34 @@ function listaCarros() {
     });
 }
 
+function carTablaMensajes(items) {
+    for (var i=0; i<items.length; i++)
+    {
+        var item = items[i]
+        $('#messages-table tbody')
+            .append('<tr>' +
+                        '<td class="col">' + item.idMessage + '</td>' +
+                        '<td class="col">' + item.messageText + '</td>' +
+                        '<td class="col"><a href="/messages/detalle.html?id=' + item.idMessage + '">Detalle</td>' +
+                    '</tr>');
+    };
+}
+
+function carTablaReservas(items) {
+    for (var i=0; i<items.length; i++)
+    {
+        var item = items[i]
+        $('#reservations-table tbody')
+            .append('<tr>' +
+                        '<td class="col">' + item.idReservation + '</td>' +
+                        '<td class="col">' + formatDate(item.startDate) + '</td>' +
+                        '<td class="col">' + formatDate(item.devolutionDate) + '</td>' +
+                        '<td class="col">' + printStatus(item.status) + '</td>' +
+                        '<td class="col"><a href="/reservation/detalle.html?id=' + item.idReservation + '">Detalle</a></td>' +
+                    '</tr>');
+    };
+}
+
 function cargarDetalles() {
     $('#mensaje').text("Cargando datos ...");
     $.ajax({    
@@ -82,23 +110,32 @@ function cargarDetalles() {
         
         success : function(response) {
             var item = response;
-            $("#car-form").css("display", "block");
-            $('#car-id').val(item.idCar);
-            $('#car-brand').val(item.brand);
-            $('#car-name').val(item.name);
-            $('#car-year').val(item.year);
-            $('#car-description').val(item.description);
-            $('#car-brand').prop("disabled", false)
-            $('#car-name').prop("disabled", false)
-            $('#car-year').prop("disabled", false)
-            $('#car-description').prop("disabled", false)
-            listaGamas(item.gama == null ? -1 : item.gama.idGama);
+            if (item != null) {
+                $("#content").show();
+                $('#car-id').val(item.idCar);
+                $('#car-brand').val(item.brand);
+                $('#car-name').val(item.name);
+                $('#car-year').val(item.year);
+                $('#car-description').val(item.description);
+                $('#car-brand').prop("disabled", false)
+                $('#car-name').prop("disabled", false)
+                $('#car-year').prop("disabled", false)
+                $('#car-description').prop("disabled", false)
+                listaGamas(item.gama == null ? -1 : item.gama.idGama);
+                carTablaReservas(item.reservations);
+                carTablaMensajes(item.messages);
+                $('#mensaje').empty();
+            } else {
+                $('#content').empty();
+                $('#mensaje').text("No hay registro disponible");
+            }
         },
         error : function(xhr, status) {
             console.log('ha sucedido un problema');
+            $('#content').empty();
+            $('#mensaje').text("No hay registro disponible");
         },
         complete : function(xhr, status) {
-            $('#mensaje').empty();
             console.log('Petición realizada');
         }
     });
@@ -174,7 +211,7 @@ function eliminar() {
             
             success : function(response, status) {
                 alert('Registro eliminado');
-                $('#car-form').css("display", "none");
+                $('#content').empty();
                 $('#mensaje').text("No hay registro disponible");
             },
             error : function(xhr, status) {

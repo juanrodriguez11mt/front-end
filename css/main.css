@@ -7,9 +7,30 @@ form input, form select {
 }
 
 form {
+    margin: 0 auto;
+    max-width: 450px;
     padding: 20px 0;
+    width: 90%;
+}
+
+.banner {
+    display: block;
+    margin: 0 auto;
+    padding-top: 10px;
+    width: 70%;
 }
 
 .report-status *{
     font-size: 20px;
+}
+
+.relations {
+    margin: 0 auto;
+    max-width: 750px;
+    padding-bottom: 20px;
+    width: 90%;
+}
+
+#content {
+    display: none;
 }

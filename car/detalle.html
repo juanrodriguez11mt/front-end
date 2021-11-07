@@ -30,8 +30,8 @@
 
             <span id="mensaje"></span>
 
-            <div class="container" style="width: 400px;">
-                <form id="car-form" style="display: none;" method="dialog" onsubmit="actualizar()">
+            <div id="content" class="container">
+                <form id="car-form" method="dialog" onsubmit="actualizar()">
                     <div>
                         <label>ID</label>
                         <input id="car-id" type="number" disabled/>
@@ -66,6 +66,39 @@
                         <button type="button" class="btn btn-danger" onclick="eliminar()">Eliminar</button>
                     </div>
                 </form>
+
+                <br>
+
+                <div class="relations">
+                    <h2>Mensajes asociados</h2>
+                    <table class="table" id="messages-table">
+                        <thead>
+                            <tr>
+                                <th class="col">ID</th>
+                                <th class="col">Mensaje</th>
+                                <th class="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                    <br>
+                    <br>
+                    
+                    <h2>Reservas asociadas</h2>
+                    <table class="table" id="reservations-table">
+                        <thead>
+                            <tr>
+                                <th class="col">ID</th>
+                                <th class="col">Fecha inicio</th>
+                                <th class="col">Fecha devolución</th>
+                                <th class="col">Estado</th>
+                                <th class="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
 
         </div>

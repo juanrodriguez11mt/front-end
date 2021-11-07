@@ -108,18 +108,25 @@ function cargarDetalles() {
         
         success : function(response) {
             var item = response;
-            $("#message-form").css("display", "block");
-            $('#message-id').val(item.idMessage);
-            $('#message-message').val(item.messageText);
-            $('#message-message').prop("disabled", false)
-            listaCarros(item.car.idCar)
-            listaClientes(item.client.idClient)
+            if (item != null) {
+                $("#content").show();
+                $('#message-id').val(item.idMessage);
+                $('#message-message').val(item.messageText);
+                $('#message-message').prop("disabled", false)
+                listaCarros(item.car.idCar)
+                listaClientes(item.client.idClient)
+                $('#mensaje').empty();
+            } else {
+                $('#content').empty();
+                $('#mensaje').text("No hay registro disponible");
+            }
         },
         error : function(xhr, status) {
             console.log('ha sucedido un problema');
+            $('#content').empty();
+            $('#mensaje').text("No hay registro disponible");
         },
         complete : function(xhr, status) {
-            $('#mensaje').empty();
             console.log('Petición realizada');
         }
     });
@@ -184,7 +191,7 @@ function eliminar() {
             
             success : function(response, status) {
                 alert('Registro eliminado');
-                $('#message-form').css("display", "none");
+                $('#content').empty();
                 $('#mensaje').text("No hay registro disponible");
             },
             error : function(xhr, status) {

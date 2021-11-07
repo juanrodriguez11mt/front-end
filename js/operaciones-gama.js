@@ -5,6 +5,23 @@ function cargarLista() {
     listaCarros();
 }
 
+function carTablaCarros(items) {
+    for (var i=0; i<items.length; i++)
+    {
+        var item = items[i]
+        $('#cars-table tbody')
+            .append('<tr>' +
+                '<td class="col">' + item.idCar + '</td>' +
+                '<td class="col">' + item.name + '</td>' +
+                '<td class="col">' + item.brand + '</td>' +
+                '<td class="col">' + item.year + '</td>' +
+                '<td class="col">' + item.description + '</td>' +
+                '<td class="col"><a href="/car/detalle.html?id=' + item.idCar + '">Detalle</td>' +
+                '</tr>');
+    };
+}
+            
+
 function listaCarros() {
     $('#gamas-table tbody').empty();
     $.ajax({    
@@ -50,18 +67,26 @@ function cargarDetalles() {
         
         success : function(response) {
             var item = response;
-            $("#gama-form").css("display", "block");
-            $('#gama-id').val(item.idGama);
-            $('#gama-name').val(item.name);
-            $('#gama-description').val(item.description);
-            $('#gama-name').prop("disabled", false)
-            $('#gama-description').prop("disabled", false)
+            if (item != null) {
+                $("#content").show();
+                $('#gama-id').val(item.idGama);
+                $('#gama-name').val(item.name);
+                $('#gama-description').val(item.description);
+                $('#gama-name').prop("disabled", false)
+                $('#gama-description').prop("disabled", false)
+                carTablaCarros(item.cars);
+                $('#mensaje').empty();
+            } else {
+                $('#content').empty();
+                $('#mensaje').text("No hay registro disponible");
+            }
         },
         error : function(xhr, status) {
             console.log('ha sucedido un problema');
+            $('#content').empty();
+            $('#mensaje').text("No hay registro disponible");
         },
         complete : function(xhr, status) {
-            $('#mensaje').empty();
             console.log('Petición realizada');
         }
     });
@@ -130,7 +155,7 @@ function eliminar() {
             
             success : function(response, status) {
                 alert('Registro eliminado');
-                $('#gama-form').css("display", "none");
+                $('#content').empty();
                 $('#mensaje').text("No hay registro disponible");
             },
             error : function(xhr, status) {

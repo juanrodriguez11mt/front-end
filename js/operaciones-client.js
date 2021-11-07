@@ -40,6 +40,33 @@ function listaClientes() {
     });
 }
 
+function carTablaMensajes(items) {
+    for (var i=0; i<items.length; i++)
+    {
+        var item = items[i]
+        $('#messages-table tbody')
+            .append('<tr>' +
+                        '<td class="col">' + item.idMessage + '</td>' +
+                        '<td class="col">' + item.messageText + '</td>' +
+                        '<td class="col"><a href="/messages/detalle.html?id=' + item.idMessage + '">Detalle</td>' +
+                    '</tr>');
+    };
+}
+
+function carTablaReservas(items) {
+    for (var i=0; i<items.length; i++)
+    {
+        var item = items[i]
+        $('#reservations-table tbody')
+            .append('<tr>' +
+                        '<td class="col">' + item.idReservation + '</td>' +
+                        '<td class="col">' + formatDate(item.startDate) + '</td>' +
+                        '<td class="col">' + formatDate(item.devolutionDate) + '</td>' +
+                        '<td class="col">' + printStatus(item.status) + '</td>' +
+                        '<td class="col"><a href="/reservation/detalle.html?id=' + item.idReservation + '">Detalle</a></td>' +
+                    '</tr>');
+    };
+}
 function cargarDetalles() {
     $('#mensaje').text("Cargando datos ...");
     var id = obtenerParametroId();
@@ -52,22 +79,31 @@ function cargarDetalles() {
         
         success : function(response) {
             var item = response;
-            $("#client-form").css("display", "block");
-            $('#client-id').val(item.idClient);
-            $('#client-name').val(item.name);
-            $('#client-age').val(item.age);
-            $('#client-email').val(item.email);
-            $('#client-password').val(item.password);
-            $('#client-name').prop("disabled", false)
-            $('#client-age').prop("disabled", false)
-            $('#client-email').prop("disabled", false)
-            $('#client-password').prop("disabled", false)
+            if (item != null) {
+                $("#content").show();
+                $('#client-id').val(item.idClient);
+                $('#client-name').val(item.name);
+                $('#client-age').val(item.age);
+                $('#client-email').val(item.email);
+                $('#client-password').val(item.password);
+                $('#client-name').prop("disabled", false)
+                $('#client-age').prop("disabled", false)
+                $('#client-email').prop("disabled", false)
+                $('#client-password').prop("disabled", false)
+                carTablaReservas(item.reservations);
+                carTablaMensajes(item.messages);
+                $('#mensaje').empty();
+            } else {
+                $('#content').empty();
+                $('#mensaje').text("No hay registro disponible");
+            }
         },
         error : function(xhr, status) {
             console.log('ha sucedido un problema');
+            $('#content').empty();
+            $('#mensaje').text("No hay registro disponible");
         },
         complete : function(xhr, status) {
-            $('#mensaje').empty();
             console.log('Petición realizada');
         }
     });
@@ -142,7 +178,7 @@ function eliminar() {
             
             success : function(response, status) {
                 alert('Registro eliminado');
-                $('#client-form').css("display", "none");
+                $('#content').empty();
                 $('#mensaje').text("No hay registro disponible");
             },
             error : function(xhr, status) {

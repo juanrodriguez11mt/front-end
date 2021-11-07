@@ -1,12 +1,5 @@
 var ruta = dominio + "Score/";
 
-function formatDate(reservationDate) {
-    var date = new Date(reservationDate);
-    var day = ("0" + date.getDate()).slice(-2);
-    var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    return date.getFullYear() + "-" + month + "-" + day ;
-}
-
 function printReservation(reservation) {
     return reservation.client.name + ' - ' 
             + reservation.car.name + '[' + reservation.car.brand + ' (' + reservation.car.year + ') ' + '] - '  
@@ -49,6 +42,7 @@ function listaReservas(idReserva, inNew) {
                 $('#mensaje').text("La reserva ya cuenta con una calificación");
                 return;
             }
+            $('#score-form').css("display", "block");
             $('#score-reservation')
                 .append('<option value="' + data.idReservation + '" selected >' + printReservation(item) + '</option>');
         },
@@ -73,19 +67,25 @@ function cargarDetalles() {
         
         success : function(response) {
             var item = response;
-            $("#score-form").css("display", "block");
-            $('#score-id').val(item.idScore);
-            $('#score-stars').val(item.stars);
-            $('#score-message').val(item.messageText);
-            $('#score-stars').prop("disabled", false)
-            $('#score-message').prop("disabled", false)
-            listaReservas(item.reservation.idReservation, false);
+            if (item != null) {
+                $('#content').show();
+                $('#score-id').val(item.idScore);
+                $('#score-stars').val(item.stars);
+                $('#score-message').val(item.messageText);
+                $('#score-stars').prop("disabled", false)
+                $('#score-message').prop("disabled", false)
+                listaReservas(item.reservation.idReservation, false);$('#mensaje').empty();
+            } else {
+                $('#content').empty();
+                $('#mensaje').text("No hay registro disponible");
+            }
         },
         error : function(xhr, status) {
             console.log('ha sucedido un problema');
+            $('#content').empty();
+            $('#mensaje').text("No hay registro disponible");
         },
         complete : function(xhr, status) {
-            $('#mensaje').empty();
             console.log('Petición realizada');
         }
     });
@@ -137,7 +137,7 @@ function eliminar() {
             
             success : function(response, status) {
                 alert('Registro eliminado');
-                $('#score-form').css("display", "none");
+                $('#content').empty();
                 $('#mensaje').text("No hay registro disponible");
             },
             error : function(xhr, status) {

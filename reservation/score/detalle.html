@@ -29,8 +29,8 @@
 
             <span id="mensaje"></span>
 
-            <div class="container" style="width: 400px;">
-                <form id="score-form" style="display: none;" method="dialog" onsubmit="actualizar()">
+            <div id="content" class="container" >
+                <form id="score-form" method="dialog" onsubmit="actualizar()">
                     <div>
                         <label>ID</label>
                         <input id="score-id" type="number" disabled/>
@@ -57,7 +57,7 @@
                     
                     <div class="mx-aut">
                         <button type="submit" class="btn btn-success">Actualizar</button>
-                        <button type="button" class="btn btn-primary" onclick="eliminar()">Eliminar</button>
+                        <!--<button type="button" class="btn btn-primary" onclick="eliminar()">Eliminar</button>-->
                     </div>
                 </form>
             </div>
